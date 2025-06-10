@@ -1,6 +1,6 @@
 # Boring Todo List
 
-A boring todo list written in Go.
+A boring CLI todo list written in Go.
 
 ```
   _                _               _            _         _ _     _   
