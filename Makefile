@@ -1,28 +1,48 @@
-.PHONY: all build install run clean
+.PHONY: all build install run clean uninstall
 
-# Binary name
-BINARY_NAME=task-tracker
-BUILD_DIR=bin
+# binary names
+BINARY_NAME=btl
+BINARY_PATH=/usr/local/bin
+LOCAL_BIN=bin/$(BINARY_NAME)
 
 all: build
 
-# Ensure build directory exists
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+bin:
+	mkdir -p bin
 
-# Build the binary
-build: $(BUILD_DIR)
-	go build -o $(BUILD_DIR)/$(BINARY_NAME) ./cmd/cli-task-tracker
+# build binary
+build: bin
+	go build -o $(LOCAL_BIN) ./cmd/cli-task-tracker
+	@echo "Binary built as: $(LOCAL_BIN)"
+	@echo "Run locally with: ./$(LOCAL_BIN)"
+	@echo "Or install system-wide with: make install"
 
-# Install the binary to GOPATH/bin
-install:
-	go install ./cmd/cli-task-tracker
+# install the binary to /usr/local/bin (requires sudo)
+install: build
+	@echo "Installing $(BINARY_NAME) to $(BINARY_PATH)..."
+	@if [ -w "$(BINARY_PATH)" ]; then \
+		cp $(LOCAL_BIN) $(BINARY_PATH)/; \
+	else \
+		echo "Need sudo permission to install to $(BINARY_PATH)"; \
+		sudo cp $(LOCAL_BIN) $(BINARY_PATH)/; \
+	fi
+	@echo "Installation complete. Run '$(BINARY_NAME)' to get started."
 
-# Run without installing
+# run w/o installing
 run:
 	go run ./cmd/cli-task-tracker
 
-# Clean build files
 clean:
-	rm -rf $(BUILD_DIR)
-	go clean 
+	rm -rf bin
+	go clean
+
+# uninstall binary
+uninstall:
+	@echo "Removing $(BINARY_NAME) from $(BINARY_PATH)..."
+	@if [ -w "$(BINARY_PATH)" ]; then \
+		rm -f $(BINARY_PATH)/$(BINARY_NAME); \
+	else \
+		echo "Need sudo permission to remove from $(BINARY_PATH)"; \
+		sudo rm -f $(BINARY_PATH)/$(BINARY_NAME); \
+	fi
+	@echo "Uninstallation complete." 

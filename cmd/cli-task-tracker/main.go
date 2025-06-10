@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	// "log"
 	"os"
 
 	"github.com/jvkec/cli-task-tracker/internal/app"
