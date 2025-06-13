@@ -135,7 +135,7 @@ Shows task completion rates and progress over time, including daily breakdowns.
 ## Task Lifecycle
 
 - Tasks are temporary by default and will be deleted at the end of the day
-- Use the `--keep` flag when adding a task to make it permanent
+- Use the `--keep` flag when adding a task to make it permanent (until completed or deleted)
 - Temporary tasks from previous days are automatically cleaned up when you list tasks
 - The cleanup process helps keep your task list focused on current items
 
